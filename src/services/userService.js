@@ -50,7 +50,7 @@ const loginUser = (userLogin) => {
         });
       }
       const comparePassword = bcrypt.compareSync(password, checkUser.password);
-      console.log("comparePassword", comparePassword);
+      
       if (!comparePassword) {
         resolve({
           status: "ok",
@@ -112,10 +112,25 @@ const deleteUser = (id) => {
           message: "The user not defined",
         });
       }
-      // await User.findByIdAndDelete(id);
+      await User.findByIdAndDelete(id);
       resolve({
         status: "ok",
         message: "Delete SUCCESS",
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+const getAllUser = () => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const allUser = await User.find();
+      resolve({
+        status: "ok",
+        message: "SUCCESS",
+        data: allUser,
       });
     } catch (e) {
       reject(e);
@@ -127,4 +142,5 @@ module.exports = {
   loginUser,
   updateUser,
   deleteUser,
+  getAllUser,
 };

@@ -71,7 +71,7 @@ const updateUser = async (req, res) => {
         message: "The user is not defend ",
       });
     }
-    console.log("userID", userId);
+
     const respone = await useService.updateUser(userId, data);
     return res.status(200).json(respone);
   } catch (e) {
@@ -84,6 +84,7 @@ const updateUser = async (req, res) => {
 const deleteUser = async (req, res) => {
   try {
     const userId = req.params.id;
+    console.log("user", userId);
     if (!userId) {
       return res.status(200).json({
         status: "ERR",
@@ -98,9 +99,21 @@ const deleteUser = async (req, res) => {
     });
   }
 };
+
+const getAllUser = async (req, res) => {
+  try {
+    const respone = await useService.getAllUser();
+    return res.status(200).json(respone);
+  } catch (e) {
+    return res.status(404).json({
+      message: e,
+    });
+  }
+};
 module.exports = {
   createUser,
   loginUser,
   updateUser,
   deleteUser,
+  getAllUser,
 };
