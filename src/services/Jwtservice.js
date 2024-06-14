@@ -12,7 +12,6 @@ const genneralAccessToken = async (payload) => {
   return access_token;
 };
 const genneralRefreshToken = async (payload) => {
-
   const refresh_token = jwt.sign(
     {
       payload,

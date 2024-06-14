@@ -1,22 +1,22 @@
-// import express from "express";
-// import { engine } from "express-handlebars";
-
 const express = require("express");
-const handlebars = require("express-handlebars");
-const { default: mongoose } = require("mongoose");
+const dotenv = require("dotenv");
+const mongoose = require("mongoose");
 const routes = require("./routes");
+// const cors = require('cors');
 const bodyParser = require("body-parser");
+// const cookieParser = require('cookie-parser')
+
+dotenv.config();
+
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
-app.engine("handlebars", handlebars.engine());
-app.set("view engine", "handlebars");
-
-app.get("/tintuc", (req, res) => {
-  res.send(`<h1>Hello World!</h1>`);
-});
-
+// app.use(cors())
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ limit: "50mb" }));
 app.use(bodyParser.json());
+// app.use(cookieParser())
+
 routes(app);
 mongoose
   .connect(
