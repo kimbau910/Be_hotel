@@ -9,9 +9,11 @@ const {
 router.post("/sign_up", userController.createUser);
 router.post("/sign_in", userController.loginUser);
 router.post("/log-out", userController.logoutUser);
-router.put("/update_user/:id", authUserMiddleWare, userController.updateUser);
+router.put("/update_user/:id", userController.updateUser);
+// authUserMiddleWare,
 router.delete("/delete-user/:id", authMiddleWare, userController.deleteUser);
-router.get("/getAll", authMiddleWare, userController.getAllUser);
+router.get("/getAll", userController.getAllUser);
+// , authMiddleWare
 router.get(
   "/get-details/:id",
   authUserMiddleWare,
