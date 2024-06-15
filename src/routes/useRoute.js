@@ -16,9 +16,10 @@ router.get("/getAll", userController.getAllUser);
 // , authMiddleWare
 router.get(
   "/get-details/:id",
-  authUserMiddleWare,
+ 
   userController.getDetailsUser
-);
+); 
+// authUserMiddleWare,
 router.post("/refresh-token", userController.refreshToken);
 router.post("/delete-many", authMiddleWare, userController.deleteMany);
 
