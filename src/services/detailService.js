@@ -128,63 +128,117 @@ const getDetail = (id) => {
 const getAllDetail = (limit, page, sort, filter) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const totalDetail = await Detail.count();
-      let allDetail = [];
+      // Đảm bảo limit và page là số nguyên
+      limit = parseInt(limit, 10);
+      page = parseInt(page, 10);
+
+      if (isNaN(limit) || limit <= 0) {
+        limit = 2; // Giá trị mặc định nếu limit không hợp lệ
+      }
+      if (isNaN(page) || page < 0) {
+        page = 0; // Giá trị mặc định nếu page không hợp lệ
+      }
+
+      // Tạo query object rỗng
+      let query = {};
+
+      // Nếu filter có giá trị, thêm vào query object
       if (filter) {
-        const label = filter[0];
-        const allObjectFilter = await Detail.find({
-          [label]: { $regex: filter[1] },
-        })
-          .limit(limit)
-          .skip(page * limit)
-          .sort({ createdAt: -1, updatedAt: -1 });
-        resolve({
-          status: "OK",
-          message: "Success",
-          data: allObjectFilter,
-          total: totalDetail,
-          pageCurrent: Number(page + 1),
-          totalPage: Math.ceil(totalDetail / limit),
-        });
+        const [label, value] = filter;
+        query[label] = { $regex: value, $options: "i" }; // $options: "i" để không phân biệt chữ hoa chữ thường
       }
-      if (sort) {
-        const objectSort = {};
-        objectSort[sort[1]] = sort[0];
-        const allDetailSort = await Detail.find()
-          .limit(limit)
-          .skip(page * limit)
-          .sort(objectSort)
-          .sort({ createdAt: -1, updatedAt: -1 });
-        resolve({
-          status: "OK",
-          message: "Success",
-          data: allDetailSort,
-          total: totalDetail,
-          pageCurrent: Number(page + 1),
-          totalPage: Math.ceil(totalDetail / limit),
-        });
+
+      // Tạo options object để phân trang và sắp xếp
+      let options = {
+        limit: limit,
+        skip: page * limit,
+        sort: { createdAt: -1, updatedAt: -1 } // Sắp xếp mặc định
+      };
+
+      // Nếu sort có giá trị, thêm vào options object
+      if (sort && Array.isArray(sort) && sort.length === 2) {
+        const [order, field] = sort;
+        const sortOrder = parseInt(order, 10);
+
+        if (!isNaN(sortOrder) && (sortOrder === 1 || sortOrder === -1)) {
+          options.sort = { [field]: sortOrder, createdAt: -1, updatedAt: -1 };
+        } else {
+          throw new Error(`Invalid sort value: { order: ${order} }`);
+        }
       }
-      if (!limit) {
-        allDetail = await Detail.find().sort({ createdAt: -1, updatedAt: -1 });
-      } else {
-        allDetail = await Detail.find()
-          .limit(limit)
-          .skip(page * limit)
-          .sort({ createdAt: -1, updatedAt: -1 });
+
+      // Đếm tổng số bản ghi thỏa mãn điều kiện
+      const totalDetail = await Detail.countDocuments(query);
+
+      // Tính toán tổng số trang
+      const totalPage = Math.ceil(totalDetail / limit);
+
+      // Nếu page vượt quá tổng số trang, đặt lại giá trị page
+      if (page >= totalPage) {
+        page = totalPage - 1;
       }
+
+      // Tìm kiếm với query và options đã tạo
+      const allDetail = await Detail.find(query, null, { ...options, skip: page * limit });
+
+      // Trả về kết quả
       resolve({
         status: "OK",
         message: "Success",
         data: allDetail,
         total: totalDetail,
         pageCurrent: Number(page + 1),
-        totalPage: Math.ceil(totalDetail / limit),
+        totalPage: totalPage,
       });
     } catch (e) {
-      reject(e);
+      reject({
+        status: "ERR",
+        message: e.message,
+      });
     }
   });
 };
+
+
+// const getAllDetail = (limit = 2, page = 0) => {
+//   return new Promise(async (resolve, reject) => {
+//     try {
+//       // Đảm bảo limit và page là số nguyên dương
+//       limit = parseInt(limit, 10);
+//       page = parseInt(page, 10);
+
+//       if (isNaN(limit) || limit <= 0) {
+//         limit = 2; // Giá trị mặc định nếu limit không hợp lệ
+//       }
+//       if (isNaN(page) || page < 0) {
+//         page = 0; // Giá trị mặc định nếu page không hợp lệ
+//       }
+
+//       // Đếm tổng số bản ghi trong collection
+//       const totalDetail = await Detail.countDocuments();
+
+//       // Tìm các bản ghi với phân trang
+//       const allDetail = await Detail.find()
+//         .limit(limit)
+//         .skip(page * limit);
+
+//       // Trả về kết quả
+//       resolve({
+//         status: "OK",
+//         message: "Success",
+//         data: allDetail,
+//         total: totalDetail,
+//         pageCurrent: Number(page + 1),
+//         totalPage: Math.ceil(totalDetail / limit),
+//       });
+//     } catch (e) {
+//       reject({
+//         status: "ERR",
+//         message: e.message,
+//       });
+//     }
+//   });
+// };
 
 const getAllType = () => {
   return new Promise(async (resolve, reject) => {
