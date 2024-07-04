@@ -4,7 +4,7 @@ const DetailController = require("../controller/DetailController");
 const { authMiddleWare } = require("../middleware/authMiddleware");
 
 router.post("/create", DetailController.createDetail);
-router.put("/update/:id", authMiddleWare, DetailController.updateDetail);
+router.put("/update/:id",  DetailController.updateDetail);
 router.get("/get_details/:id", DetailController.getDetail);
 router.delete("/delete/:id", authMiddleWare, DetailController.deleteDetail);
 router.get("/get_all", DetailController.getAllDetail);

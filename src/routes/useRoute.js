@@ -9,17 +9,17 @@ const {
 router.post("/sign_up", userController.createUser);
 router.post("/sign_in", userController.loginUser);
 router.post("/log-out", userController.logoutUser);
-router.put("/update_user/:id", userController.updateUser);
-// authUserMiddleWare,
+router.put("/update_user/:id",authUserMiddleWare, userController.updateUser);
+// 
 router.delete("/delete-user/:id", authMiddleWare, userController.deleteUser);
-router.get("/getAll", userController.getAllUser);
-// , authMiddleWare
+router.get("/getAll", authMiddleWare, userController.getAllUser);
+//
 router.get(
   "/get-details/:id",
- 
+  authUserMiddleWare,
   userController.getDetailsUser
-); 
-// authUserMiddleWare,
+);
+//,
 router.post("/refresh-token", userController.refreshToken);
 router.post("/delete-many", authMiddleWare, userController.deleteMany);
 

@@ -1,10 +1,10 @@
-const DetailService = require("../services/detailService");
+const DetailService = require("../services/DetailService");
 
 const createDetail = async (req, res) => {
   try {
-    const { name, image, type, price, rating, description, discount } =
+    const { name, image,image1,image2,image3,imageMap, type, price, rating, description,overview,convenient, discount } =
       req.body;
-    if (!name || !image || !type || !price || !rating) {
+    if (!name  || !type || !price || !rating) {
       return res.status(200).json({
         status: "ERR",
         message: "The input is requiredd",
