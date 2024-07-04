@@ -1,4 +1,4 @@
-const Detail = require("../models/DetailModel");
+const Detail = require("../models/detailModel");
 
 const createDetail = (newDetail) => {
   return new Promise(async (resolve, reject) => {
@@ -211,7 +211,6 @@ const getAllDetail = async (limit, page, sort, filter) => {
     };
   }
 };
-
 
 const getAllType = () => {
   return new Promise(async (resolve, reject) => {

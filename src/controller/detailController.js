@@ -1,4 +1,4 @@
-const DetailService = require("../services/DetailService");
+const DetailService = require("../services/detailService");
 
 const createDetail = async (req, res) => {
   try {
