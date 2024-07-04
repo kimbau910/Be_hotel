@@ -4,4 +4,4 @@ const routes = (app) => {
   app.use("/api/user", useRoute);
   app.use("/api/detail", DetailRouter);
 };
-module.exports = routes;
+module.exports = routes;  
