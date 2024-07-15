@@ -16,6 +16,7 @@ const createDetail = (newDetail) => {
       overview,
       convenient,
       discount,
+       
     } = newDetail;
     try {
       const checkDetail = await Detail.findOne({
@@ -24,7 +25,7 @@ const createDetail = (newDetail) => {
       if (checkDetail !== null) {
         resolve({
           status: "ERR",
-          message: "The name of Detail is already",
+          message: "Tên Khách sạn đã có rồi",
         });
       }
       const newDetail = await Detail.create({
@@ -41,6 +42,7 @@ const createDetail = (newDetail) => {
         overview,
         convenient,
         discount: Number(discount),
+      
       });
       if (newDetail) {
         resolve({
@@ -64,7 +66,7 @@ const updateDetail = (id, data) => {
       if (checkDetail === null) {
         resolve({
           status: "ERR",
-          message: "The Detail is not defined",
+          message: "Khách sạn không được xác định",
         });
       }
 
@@ -91,14 +93,14 @@ const deleteDetail = (id) => {
       if (checkDetail === null) {
         resolve({
           status: "ERR",
-          message: "The Detail is not defined",
+          message: "Khách sạn không được xác định",
         });
       }
 
       await Detail.findByIdAndDelete(id);
       resolve({
         status: "OK",
-        message: "Delete Detail success",
+        message: "Xóa Khách sạn thành công",
       });
     } catch (e) {
       reject(e);
@@ -112,7 +114,7 @@ const deleteManyDetail = (ids) => {
       await Detail.deleteMany({ _id: ids });
       resolve({
         status: "OK",
-        message: "Delete Detail success",
+        message: "Xóa khách sạn thành công",
       });
     } catch (e) {
       reject(e);
@@ -129,14 +131,14 @@ const getDetail = (id) => {
       if (detail === null) {
         resolve({
           status: "ERR",
-          message: "The Detail is not defined",
+          message: "Khách sạn không được xác định",
         });
       }
 
       resolve({
         status: "OK",
         message: "SUCESS",
-        data: detail,
+        data: detail, 
       });
     } catch (e) {
       reject(e);

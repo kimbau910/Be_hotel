@@ -12,7 +12,7 @@ const createUser = (newUser) => {
       if (checkUser !== null) {
         resolve({
           status: "ERR",
-          message: "The email is already",
+          message: "Email đã tồn tại",
         });
       }
 
@@ -45,9 +45,15 @@ const loginUser = (userLogin) => {
       if (checkUser === null) {
         resolve({
           status: "ERR",
-          message: "The user is not defined",
+          message: "Email không tồn tại",
         });
       }
+      if (password !== checkUser.password) {
+        return resolve({
+            status: 'ERR',
+            message: 'Mật khẩu không chính xác'
+        });
+    }
     
       const access_token = await genneralAccessToken({
         id: checkUser.id,
@@ -80,7 +86,7 @@ const updateUser = (id, data) => {
       if (checkUser === null) {
         resolve({
           status: "ERR",
-          message: "The user is not defined",
+          message: "Người dùng không được xác định",
         });
       }
 
@@ -105,14 +111,14 @@ const deleteUser = (id) => {
       if (checkUser === null) {
         resolve({
           status: "ERR",
-          message: "The user is not defined",
+          message: "Người dùng không được xác định",
         });
       }
 
       await User.findByIdAndDelete(id);
       resolve({
         status: "OK",
-        message: "Delete user success",
+        message: "Xóa người dùng thành công",
       });
     } catch (e) {
       reject(e);

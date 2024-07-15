@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const detailController = require("../controller/detailController");
+const detailController = require("../controller/DetailController");
 const { authMiddleWare } = require("../middleware/authMiddleware");
 
 router.post("/create", detailController.createDetail);

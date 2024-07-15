@@ -15,6 +15,7 @@ const detailSchema = new mongoose.Schema(
     overview: { type: String },
     convenient: { type: String },
     discount: { type: Number },
+   
   },
   {
     timestamps: true,

@@ -14,7 +14,7 @@ const createUser = async (req, res) => {
     } else if (!isCheckEmail) {
       return res.status(200).json({
         status: "ERR",
-        message: "The input is email",
+        message: "email không hợp lệ",
       });
     }
     const response = await UserService.createUser(req.body);
@@ -39,7 +39,7 @@ const loginUser = async (req, res) => {
     } else if (!isCheckEmail) {
       return res.status(200).json({
         status: "ERR",
-        message: "The input is email",
+        message: "email không hợp lệ",
       });
     }
     const response = await UserService.loginUser(req.body);
@@ -64,7 +64,7 @@ const updateUser = async (req, res) => {
     if (!userId) {
       return res.status(200).json({
         status: "ERR",
-        message: "The userId is required",
+        message: "ID người dùng là bắt buộc",
       });
     }
     const response = await UserService.updateUser(userId, data);
@@ -82,7 +82,7 @@ const deleteUser = async (req, res) => {
     if (!userId) {
       return res.status(200).json({
         status: "ERR",
-        message: "The userId is required",
+        message: "ID người dùng là bắt buộc",
       });
     }
     const response = await UserService.deleteUser(userId);
@@ -100,7 +100,7 @@ const deleteMany = async (req, res) => {
     if (!ids) {
       return res.status(200).json({
         status: "ERR",
-        message: "The ids is required",
+        message: "ID người dùng là bắt buộc",
       });
     }
     const response = await UserService.deleteManyUser(ids);
@@ -129,7 +129,7 @@ const getDetailsUser = async (req, res) => {
     if (!userId) {
       return res.status(200).json({
         status: "ERR",
-        message: "The userId is required",
+        message: "ID người dùng là bắt buộc",
       });
     }
     const response = await UserService.getDetailsUser(userId);
@@ -164,7 +164,7 @@ const logoutUser = async (req, res) => {
     res.clearCookie("refresh_token");
     return res.status(200).json({
       status: "OK",
-      message: "Logout successfully",
+      message: "Đăng xuất thành công",
     });
   } catch (e) {
     return res.status(404).json({
